@@ -17,8 +17,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $dibayar = $_POST['dibayar'];
         $total = $_POST['total'];
         // query untuk mmenambah data 
-        $query = "INSERT INTO tb_transaksi (status, kode_invoice, pelanggan, tanggal, batas waktu, tanggal_dibayar, dibayar, tota l)
-                  VALUES ('$status', '$kode_invoice', '$pelanggan', $tanggal', '$batas_waktu', '$tanggal_dibayar', '$dibayar', '$total')";
+        $query = "INSERT INTO tb_transaksi (status, kode_invoice, pelanggan, tanggal, batas_waktu, tanggal_dibayar, dibayar, total)
+                  VALUES ('$status', '$kode_invoice', '$pelanggan', '$tanggal', '$batas_waktu', '$tanggal_dibayar', '$dibayar', '$total')";
+
         if (mysqli_query($koneksi, $query)) {
                     // redirect setelah berhasil menambah data 
             header("Location: " . $_SERVER['PHP_SELF']);
@@ -216,7 +217,7 @@ $result = mysqli_query($koneksi, "SELECT * FROM tb_transaksi");
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <span class="mr-2 d-none d-lg-inline text-gray-600 small">Selvi Yanti</span>
                                 <img class="img-profile rounded-circle"
-                                    src="img/undraw_profile.svg">
+                                    src="../img/undraw_profile.svg">
                             </a>
                             <!-- Dropdown - User Information -->
                             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
@@ -288,11 +289,9 @@ $result = mysqli_query($koneksi, "SELECT * FROM tb_transaksi");
                                                 <td><?= $row['total']; ?></td>
 
                                             <td class="d-blox">
-                                                <button class='btn btn-info btn-sm' 
-                                                onclick="openDetailModal('<?php echo $row['id']; ?>', '<?php echo addslashes($row['name']); ?>', '<?php echo addslashes($row['description']); ?>')"
-                                                data-bs-toggle='modal' 
-                                                data-bs-target='#detailModal'>x<i class="fas fa-info-circle"></i> Detail
-                                                </button>
+                                                <button class='btn btn-info btn-sm' data-bs-toggle='modal' data-bs-target='#detailModal'>
+                                                    <i class="fas fa-info-circle"></i> Detail
+                                                </button> 
 
                                                 <button class="btn btn-warning btn-sm" onclick="openEditModal(<?php echo $row['id']; ?>, '<?php echo $row['status']; ?>', '<?php echo $row['tanggal_dibayar']; ?>', '<?php echo $row['dibayar']; ?>')">
                                                 <i class="fas fa-pencil-alt"></i> Edit
@@ -316,8 +315,8 @@ $result = mysqli_query($koneksi, "SELECT * FROM tb_transaksi");
             </div>
             <!-- End of Main Content -->
 
-            <!-- Modal Tambah Data -->
-            <div class="modal fade" id="addModal" tabindex="-1" aria-labelledby="addModalLabel" aria-hidden="true">
+             <!-- Modal Tambah Data -->
+             <div class="modal fade" id="addModal" tabindex="-1" aria-labelledby="addModalLabel" aria-hidden="true">
                 <div class="modal-dialog">
                   <div class="modal-content">
                     <div class="modal-header">
@@ -331,12 +330,12 @@ $result = mysqli_query($koneksi, "SELECT * FROM tb_transaksi");
                           name="nama" //sesuaikan dengan nama kolom pada tabel database -->
                     <form id="formTambah" method="POST" action=""> 
                         <div class="mb-3">
-                          <label for="pelanggan" class="form-label">Pelanggan</label> 
-                          <input type="text" class="form-control" id="pelanggan" required>  <!-- tambahkan name disini -->
+                          <label for="pelanggan" class="form-label">Pelanggan</label>
+                          <input type="text" class="form-control" name="pelanggan" id="pelanggan" required>
                         </div>
                         <div class="mb-3">
                           <label for="status" class="form-label">Status</label>
-                          <select class="form-control" id="status" required><!-- tambahkan name disini -->                       
+                          <select class="form-control" name="status" id="status" required>
                             <option>Baru</option>
                             <option>Proses</option>
                             <option>Selesai</option>
@@ -345,19 +344,19 @@ $result = mysqli_query($koneksi, "SELECT * FROM tb_transaksi");
                         </div>
                         <div class="mb-3">
                           <label for="kodeInvoice" class="form-label">Kode Invoice</label>
-                          <input type="datetime-local" class="form-control" id="kodeInvoice" required><!-- tambahkan name disini -->
+                          <input type="datetime-local" class="form-control" name="kode_invoice" id="kodeInvoice" required>
                         </div>
                         <div class="mb-3">
                           <label for="tanggal" class="form-label">Tanggal</label>
-                          <input type="datetime-local" class="form-control" id="tanggal" required> <!-- tambahkan name disini -->
+                          <input type="datetime-local" class="form-control" name="tanggal" id="tanggal" required>
                         </div>
                         <div class="mb-3">
                           <label for="batasWaktu" class="form-label">Batas Waktu</label>
-                          <input type="datetime-local" class="form-control" id="batasWaktu" required> <!-- tambahkan name disini -->
+                          <input type="datetime-local" class="form-control" name="batas_waktu" id="batasWaktu" required>
                         </div>
                         <div class="mb-3">
                             <label for="dibayar" class="form-label">Dibayar</label>
-                            <select id="dibayar" class="form-control" > <!-- tambahkan name disini -->
+                            <select id="dibayar" name="dibayar" class="form-control" >
                                 <option value="Sudah">Sudah</option>
                                 <option value="Belum">Belum</option>
                             </select>
@@ -365,23 +364,25 @@ $result = mysqli_query($koneksi, "SELECT * FROM tb_transaksi");
                         
                         <div class="mb-3" id="divTanggalDibayar" style="display: none;">
                             <label for="tanggalDibayar" class="form-label">Tanggal Dibayar</label>
-                            <input type="datetime-local" class="form-control" id="tanggalDibayar" > <!-- tambahkan name disini -->
+                            <input type="datetime-local" class="form-control" name="tanggal_dibayar"  id="tanggalDibayar" >
                         </div>
                         <div class="mb-3">
                           <label for="total" class="form-label">Total</label>
-                          <input type="number" class="form-control"  id="total" required> <!-- tambahkan name disini -->
+                          <input type="number" class="form-control" name="total"  id="total" required>
                         </div>
                       </form>
                     </div> 
                     <div class="modal-footer">
-                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button> 
-                        <!-- pastikan type dari button tambah adalah submit-->
-                        <button type="submit" class="btn btn-primary" form="formTambah">Tambah</button>
+                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+                      
+                        <!-- Ubah button "Tambah" untuk submit form -->
+                      <button type="submit" class="btn btn-primary" form="formTambah">Tambah</button>
                     </div>
                   </div>
                 </div>
               </div> 
             <!-- Modal Tambah Data end -->
+
 
             <!-- Modal detail -->
 <div class="modal fade" id="detailModal" tabindex="-1" aria-labelledby="detailModalLabel" aria-hidden="true">
